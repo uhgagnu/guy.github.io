@@ -4,7 +4,7 @@ package org.liufeng.course.message.resp;
  * BaseMessage
  * cn.suunyboy.wechat.resp
  * author:HUGUANG
- * version:v1.0
+ * version:v1.0     
  * time:2016-11-24 下午4:44:16
  * email:940728678@qq.com
  */
