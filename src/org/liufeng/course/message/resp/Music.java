@@ -17,6 +17,8 @@ public class Music {
 	private String MusicUrl;
 	// 高质量音乐链接，WIFI环境优先使用该链接播放音乐
 	private String HQMusicUrl;
+	//音乐缩略图
+	private String ThumbMediaId;
 
 	public String getTitle() {
 		return Title;
@@ -50,4 +52,11 @@ public class Music {
 		HQMusicUrl = musicUrl;
 	}
 
+	public String getThumbMediaId() {
+		return ThumbMediaId;
+	}
+
+	public void setThumbMediaId(String thumbMediaId) {
+		ThumbMediaId = thumbMediaId;
+	}
 }

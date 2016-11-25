@@ -9,13 +9,13 @@ package org.liufeng.course.message.resp;
  */
 public class VideoMessage extends BaseMessage{
 
-	private Video video;
+	private Video Video;
 
 	public Video getVideo() {
-		return video;
+		return Video;
 	}
 
 	public void setVideo(Video video) {
-		this.video = video;
+		this.Video = video;
 	}
 }

@@ -44,6 +44,7 @@ public class WeixinUtil {
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";  
 	
 	public final static String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
+
 	/** 
 	 * 获取access_token 
 	 *  
@@ -217,9 +218,9 @@ public class WeixinUtil {
 		JSONObject jsonObj = JSONObject.fromObject(result);
 		System.out.println(jsonObj);
 		String typeName = "media_id";
-		if(!"image".equals(type)){
-			typeName = type + "_media_id";
-		}
+		//if(!"image".equals(type)){
+		//	typeName = type + "_media_id";
+		//}
 		String mediaId = jsonObj.getString(typeName);
 		return mediaId;
 	}

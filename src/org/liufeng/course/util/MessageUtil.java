@@ -16,6 +16,8 @@ import org.liufeng.course.message.resp.ImageMessage;
 import org.liufeng.course.message.resp.MusicMessage;
 import org.liufeng.course.message.resp.NewsMessage;
 import org.liufeng.course.message.resp.TextMessage;
+import org.liufeng.course.message.resp.Video;
+import org.liufeng.course.message.resp.VideoMessage;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
@@ -72,6 +74,11 @@ public class MessageUtil {
 	 * 请求消息类型：音频
 	 */
 	public static final String REQ_MESSAGE_TYPE_VOICE = "voice";
+	
+	/**
+	 * 视频
+	 */
+	public static final String REQ_MESSAGE_TYPE_VIDEO = "video";
 
 	/**
 	 * 请求消息类型：推送
@@ -168,6 +175,15 @@ public class MessageUtil {
 		return xStream.toXML(imageMessage);
 	} 
 
+	/**
+	 * 视频消息转为xml
+	 */
+	public static String videoMessage2Xml(VideoMessage videoMessage){
+		xstream.alias("xml", videoMessage.getClass());
+		xstream.alias("Video", new Video().getClass());
+		return xstream.toXML(videoMessage);
+	}
+	
 	/**
 	 * 扩展xstream，使其支持CDATA块
 	 * 

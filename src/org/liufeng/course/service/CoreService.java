@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.liufeng.course.message.resp.Article;
 import org.liufeng.course.message.resp.Image;
 import org.liufeng.course.message.resp.ImageMessage;
+import org.liufeng.course.message.resp.Music;
+import org.liufeng.course.message.resp.MusicMessage;
 import org.liufeng.course.message.resp.NewsMessage;
 import org.liufeng.course.message.resp.TextMessage;
+import org.liufeng.course.message.resp.Video;
+import org.liufeng.course.message.resp.VideoMessage;
 import org.liufeng.course.util.MessageUtil;
-
 import org.liufeng.weixin.pojo.AccessToken;
 import org.liufeng.weixin.util.WeixinUtil;
 import org.slf4j.Logger;
@@ -60,7 +63,7 @@ public class CoreService {
 			textMessage.setFromUserName(toUserName);
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-			textMessage.setFuncFlag(0);
+	//		textMessage.setFuncFlag(0);
 			// 由于href属性值必须用双引号引起，这与字符串本身的双引号冲突，所以要转义			
 			StringBuffer contentMsg = new StringBuffer();  
 			contentMsg.append("欢迎访问本微信公众测试平台").append("\n");  
@@ -89,7 +92,7 @@ public class CoreService {
 				newsMessage.setFromUserName(toUserName);
 				newsMessage.setCreateTime(new Date().getTime());
 				newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-				newsMessage.setFuncFlag(0);
+			//	newsMessage.setFuncFlag(0);
 
 				List<Article> articleList = new ArrayList<Article>();
 				// 单图文消息
@@ -245,7 +248,40 @@ public class CoreService {
 					System.out.println(respMessage);
 					
 				}else if("视频".equals(content)){
-
+					
+					Video video = new Video();
+					video.setTitle("精美小视频");
+					video.setDescription("米场人笑翻了...");
+					video.setMediaId("CCWTaX7HdI1ST8VFHjpv52DbRQcn6vaHS7kcvhd12ym0wHbmcbGD5unIo1ULyvta");
+					
+					VideoMessage videoMessage = new VideoMessage();
+					videoMessage.setFromUserName(toUserName);
+					videoMessage.setToUserName(fromUserName);
+					videoMessage.setCreateTime(System.currentTimeMillis());
+					videoMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+					videoMessage.setVideo(video);
+					respMessage = MessageUtil.videoMessage2Xml(videoMessage);
+					
+					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
+					System.out.println(respMessage);
+					
+				}else if("音乐".equals(content)){
+					
+					Music music = new Music();
+					music.setTitle("傻逼..");
+					music.setDescription("xxxxxxxxxxxxxxxx");
+					music.setThumbMediaId("ZOQWDveYoUe-QVzS1s2i4ekMbioQSZ7F_4Wg1k0e2Aw3WrgwsVtVdtldUsDkz4gZ");
+					music.setMusicUrl("http://1612w56h01.51mypc.cn/wechat/luchuan.mp3");
+					music.setHQMusicUrl("http://1612w56h01.51mypc.cn/wechat/luchuan.mp3");
+					
+					MusicMessage muMessage = new MusicMessage();
+					muMessage.setFromUserName(toUserName);
+					muMessage.setToUserName(fromUserName);
+					muMessage.setCreateTime(System.currentTimeMillis());
+					muMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_MUSIC);
+					muMessage.setMusic(music);
+					
+					respMessage = MessageUtil.musicMessageToXml(muMessage);
 					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
 					System.out.println(respMessage);
 					
