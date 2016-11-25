@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
  * time:2016-11-24 下午4:44:16
  * email:940728678@qq.com
  */
+@SuppressWarnings("unused")
 public class CoreService {
 	
 	//private static Logger log = LoggerFactory.getLogger(CoreService.class);

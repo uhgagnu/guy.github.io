@@ -22,7 +22,6 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.liufeng.weixin.pojo.AccessToken;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * email:940728678@qq.com
  */
 public class WeixinUtil {
+	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);
 
 	// 菜单创建（POST） 限100（次/天）   
