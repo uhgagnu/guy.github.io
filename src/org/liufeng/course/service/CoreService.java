@@ -281,41 +281,8 @@ public class CoreService {
 					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
 					System.out.println(respMessage);
 					
-				}else if("音乐".equals(content)){
-					//组装菜单
-					Menu menu = new Menu();
-					
-					ClickButton clickButton11 = new ClickButton();
-					clickButton11.setName("github库");
-					clickButton11.setType("click");
-					clickButton11.setKey("clickButon1");
-					
-					ViewButton viewButton21 = new ViewButton();
-					viewButton21.setName("view菜单");
-					viewButton21.setType("view");
-					viewButton21.setUrl("https://github.com/uhgagnu");
-					
-					ClickButton clickButton31 = new ClickButton();
-					clickButton31.setName("扫码事件");
-					clickButton31.setType("scancode_push");
-					clickButton31.setKey("31");
-					
-					ClickButton clickButton32 = new ClickButton();
-					clickButton32.setName("地理位置");
-					clickButton32.setType("location_select");
-					clickButton32.setType("32");
-					
-					Button button = new Button();
-					button.setName("菜单");
-					button.setSub_button(new Button[]{clickButton31, clickButton32});
-					
-					menu.setButton(new Button[]{clickButton11, viewButton21, button});
-					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
-					System.out.println(respMessage);
-					
 				}
-			}
-			else if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)){
+			}else if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)){
 				// 接收用户发送的事件请求内容
 				String eventType = requestMap.get("Event");
 				String eventKey = requestMap.get("EventKey");
@@ -329,10 +296,14 @@ public class CoreService {
 					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "event", eventKey);
 				}else if(MessageUtil.EVENT_TYPE_SCANCODE.equals(eventType)){
 					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, msgType, eventKey);
-				}else if (MessageUtil.EVENT_TYPE_LOCATION.equals(eventType)) {
-					String label = requestMap.get("Label");
-					System.out.println("label::::"+label);
-					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "event", label);
+				}
+				else if (MessageUtil.EVENT_TYPE_LOCATION.equals(eventType)) {
+//					String label = requestMap.get("Label");
+//					String Location_X = requestMap.get("Location_X");
+//					System.out.println("label::::"+label);
+//					System.out.println("Location_X::::"+Location_X);
+					respMessage = null;
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "event", "番禺");
 				}
 				
 				System.out.println("eventType:"+eventType);

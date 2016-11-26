@@ -20,8 +20,8 @@ public class Token {
 
 		AccessToken accessToken = null;
 	public static void main(String[] args) throws IOException {
-	//	AccessToken accessToken = WeixinUtil.getAccessToken("wxf0c766b553e5610c", "abb31e73ed0e5c83e67188c3fc10d39e");
-	//	System.out.println("票据:"+accessToken.getToken());
+		AccessToken accessToken = WeixinUtil.getAccessToken("wxf0c766b553e5610c", "abb31e73ed0e5c83e67188c3fc10d39e");
+		System.out.println("票据:"+accessToken.getToken());
 	//	System.out.println("有效时间:"+accessToken.getExpiresIn());
 		//token l6sIQ6kcIClf4ySqfbXoKr-SrCPJ4bjVMdUzBSC0YV2hZsJYnETSBpfrBbf4a0Xpax9-6HAl6YxAg5XNrPXBPjUBI-KQcLUBhH4WR1EO9oEooAib_ngF-vnVDJFcuwrqUAEaAFAIOS
 		//测试上传
