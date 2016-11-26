@@ -21,6 +21,10 @@ import javax.net.ssl.TrustManager;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
+import org.liufeng.course.message.resp.Button;
+import org.liufeng.course.message.resp.ClickButton;
+import org.liufeng.course.message.resp.Menu;
+import org.liufeng.course.message.resp.ViewButton;
 import org.liufeng.weixin.pojo.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +49,9 @@ public class WeixinUtil {
 	
 	public final static String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
 
+	//调用创建接口创建菜单
+	public final static String CREATE_MENU = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	
 	/** 
 	 * 获取access_token 
 	 *  
@@ -223,5 +230,53 @@ public class WeixinUtil {
 		//}
 		String mediaId = jsonObj.getString(typeName);
 		return mediaId;
+	}
+	
+	/**
+	 * 组装菜单
+	 * @return Menu
+	 */
+	public static Menu initMenu(){
+		//组装菜单
+		Menu menu = new Menu();
+		
+		ClickButton clickButton11 = new ClickButton();
+		clickButton11.setName("github库");
+		clickButton11.setType("click");
+		clickButton11.setKey("clickButon1");
+		
+		ViewButton viewButton21 = new ViewButton();
+		viewButton21.setName("view菜单");
+		viewButton21.setType("view");
+		viewButton21.setUrl("https://github.com/uhgagnu");
+		
+		ClickButton clickButton31 = new ClickButton();
+		clickButton31.setName("扫码事件");
+		clickButton31.setType("pic_weixin");
+		clickButton31.setKey("31");
+		
+		ClickButton clickButton32 = new ClickButton();
+		clickButton32.setName("地理位置");
+		clickButton32.setType("location_select");
+		clickButton32.setKey("32");
+		
+		Button button = new Button();
+		button.setName("sub菜单");
+		button.setSub_button(new Button[]{clickButton31, clickButton32});
+		
+		menu.setButton(new Button[]{clickButton11,viewButton21,button});
+		//返回Menu对象
+		return menu;
+	}
+	
+	
+	public static int createMenu(String token, String requestMenu){
+		int resultErrcode = 0;
+		String url = CREATE_MENU.replace("ACCESS_TOKEN", token);
+		JSONObject resultjson = httpRequest(url, "POST", requestMenu);
+		if (resultjson!=null) {
+			resultErrcode = resultjson.getInt("errcode");
+		}
+		return resultErrcode;
 	}
 }

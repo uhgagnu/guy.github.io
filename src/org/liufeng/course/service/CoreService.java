@@ -8,14 +8,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.liufeng.course.message.resp.Article;
+import org.liufeng.course.message.resp.Button;
+import org.liufeng.course.message.resp.ClickButton;
 import org.liufeng.course.message.resp.Image;
 import org.liufeng.course.message.resp.ImageMessage;
+import org.liufeng.course.message.resp.Menu;
 import org.liufeng.course.message.resp.Music;
 import org.liufeng.course.message.resp.MusicMessage;
 import org.liufeng.course.message.resp.NewsMessage;
 import org.liufeng.course.message.resp.TextMessage;
 import org.liufeng.course.message.resp.Video;
 import org.liufeng.course.message.resp.VideoMessage;
+import org.liufeng.course.message.resp.ViewButton;
 import org.liufeng.course.util.MessageUtil;
 import org.liufeng.weixin.pojo.AccessToken;
 import org.liufeng.weixin.util.WeixinUtil;
@@ -65,19 +69,10 @@ public class CoreService {
 			textMessage.setCreateTime(new Date().getTime());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 	//		textMessage.setFuncFlag(0);
-			// 由于href属性值必须用双引号引起，这与字符串本身的双引号冲突，所以要转义			
-			StringBuffer contentMsg = new StringBuffer();  
-			contentMsg.append("欢迎访问本微信公众测试平台").append("\n");  
-			contentMsg.append("您好，我是sunnyboy，请回复数字选择服务：").append("\n\n");  
-			contentMsg.append("1 Individual Resume").append("\n");  
-			contentMsg.append("2 github-repository ").append("\n");  
-			contentMsg.append("3 CSDN-technology-blog").append("\n");  
-			contentMsg.append("4 Linux&git").append("\n");  
-			contentMsg.append("5 OpenSource").append("\n");  
-			contentMsg.append("6 BeautyImage").append("\n\n");
-			contentMsg.append("点击查看 <a href=\"https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453&token=&lang=zh_CN\">开发者文档</a>");  
 
-			textMessage.setContent(contentMsg.toString());
+			//构建主菜单,并设置为返回内容
+			textMessage.setContent(MessageUtil.buildMainText());
+			
 			// 将文本消息对象转换成xml字符串
 			respMessage = MessageUtil.textMessageToXml(textMessage);
 
@@ -286,21 +281,71 @@ public class CoreService {
 					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
 					System.out.println(respMessage);
 					
+				}else if("音乐".equals(content)){
+					//组装菜单
+					Menu menu = new Menu();
+					
+					ClickButton clickButton11 = new ClickButton();
+					clickButton11.setName("github库");
+					clickButton11.setType("click");
+					clickButton11.setKey("clickButon1");
+					
+					ViewButton viewButton21 = new ViewButton();
+					viewButton21.setName("view菜单");
+					viewButton21.setType("view");
+					viewButton21.setUrl("https://github.com/uhgagnu");
+					
+					ClickButton clickButton31 = new ClickButton();
+					clickButton31.setName("扫码事件");
+					clickButton31.setType("scancode_push");
+					clickButton31.setKey("31");
+					
+					ClickButton clickButton32 = new ClickButton();
+					clickButton32.setName("地理位置");
+					clickButton32.setType("location_select");
+					clickButton32.setType("32");
+					
+					Button button = new Button();
+					button.setName("菜单");
+					button.setSub_button(new Button[]{clickButton31, clickButton32});
+					
+					menu.setButton(new Button[]{clickButton11, viewButton21, button});
+					System.out.println("&&&&&&&&&&&respMessage&&&&&&&&&&");
+					System.out.println(respMessage);
+					
 				}
 			}
 			else if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)){
 				// 接收用户发送的事件请求内容
-				String Event = requestMap.get("Event");
-				String EventKey = requestMap.get("EventKey");
-				System.out.println("EventKey:"+Event);
-				System.out.println("EventKey:"+EventKey);
+				String eventType = requestMap.get("Event");
+				String eventKey = requestMap.get("EventKey");
+				
+				if (MessageUtil.EVENT_TYPE_SUBSCRIBE.equals(eventType)) {
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "CLICK", MessageUtil.buildMainText());
+				}else if(MessageUtil.EVENT_TYPE_CLICK.equals(eventType)){
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, MessageUtil.REQ_MESSAGE_TYPE_TEXT, MessageUtil.buildMainText());
+				}else if(MessageUtil.EVEN_TYPE_VIEW.equals(eventType)){
+					System.out.println("yuuuuuuuuuu:"+eventKey);
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "event", eventKey);
+				}else if(MessageUtil.EVENT_TYPE_SCANCODE.equals(eventType)){
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, msgType, eventKey);
+				}else if (MessageUtil.EVENT_TYPE_LOCATION.equals(eventType)) {
+					String label = requestMap.get("Label");
+					System.out.println("label::::"+label);
+					respMessage = MessageUtil.buildTextToRet(toUserName, fromUserName, "event", label);
+				}
+				
+				System.out.println("eventType:"+eventType);
+				System.out.println("eventKey:"+eventKey);
+				System.out.println("respMessage:::");
+				System.out.println(respMessage);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return respMessage;
 	}
-
+ 
 	/**
 	 * emoji表情转换(hex -> utf-16)
 	 * 

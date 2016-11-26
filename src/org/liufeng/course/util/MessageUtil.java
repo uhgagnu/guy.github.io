@@ -2,6 +2,7 @@ package org.liufeng.course.util;
 
 import java.io.InputStream;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,22 @@ public class MessageUtil {
 	 * 事件类型：CLICK(自定义菜单点击事件)
 	 */
 	public static final String EVENT_TYPE_CLICK = "CLICK";
+	
+	/**
+	 * 事件类型：VIEW
+	 */
+	public static final String EVEN_TYPE_VIEW = "VIEW";
 
+	/**
+	 * 扫码事件推送
+	 */
+	public static final String EVENT_TYPE_SCANCODE = "scancode_push";
+	
+	/**
+	 * 地理位置
+	 */
+	public static final String EVENT_TYPE_LOCATION = "location_select";
+	
 	/**
 	 * 解析微信发来的请求（XML）
 	 * 
@@ -212,4 +228,38 @@ public class MessageUtil {
 			};
 		}
 	});
+
+	/**
+	 * 封装主菜单
+	 */
+	public static String buildMainText(){
+		// 由于href属性值必须用双引号引起，这与字符串本身的双引号冲突，所以要转义			
+		StringBuffer contentMsg = new StringBuffer();  
+		contentMsg.append("欢迎访问本微信公众测试平台").append("\n");  
+		contentMsg.append("您好，我是sunnyboy，请回复数字选择服务：").append("\n\n");  
+		contentMsg.append("1 Individual Resume").append("\n");  
+		contentMsg.append("2 github-repository ").append("\n");  
+		contentMsg.append("3 CSDN-technology-blog").append("\n");  
+		contentMsg.append("4 Linux&git").append("\n");  
+		contentMsg.append("5 OpenSource").append("\n");  
+		contentMsg.append("6 BeautyImage").append("\n\n");
+		contentMsg.append("点击查看 <a href=\"https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140453&token=&lang=zh_CN\">开发者文档</a>");  
+		
+		return contentMsg.toString();
+	}
+	
+	/**
+	 * 组装文本消息用于返回
+	 */
+	public static String buildTextToRet(String toUserName, String fromUserName, String msgType, String content){
+		TextMessage textMessage = new TextMessage();
+		textMessage.setFromUserName(toUserName);
+		textMessage.setToUserName(fromUserName);
+		textMessage.setCreateTime(System.currentTimeMillis());
+		textMessage.setMsgType(msgType);
+		textMessage.setContent(content);
+		
+		return MessageUtil.textMessageToXml(textMessage);
+	}
+	
 }
