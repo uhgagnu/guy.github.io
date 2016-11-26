@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class CoreService {
 	
 	//private static Logger log = LoggerFactory.getLogger(CoreService.class);
-	
+	    
 	/**
 	 * 处理微信发来的请求
 	 * 

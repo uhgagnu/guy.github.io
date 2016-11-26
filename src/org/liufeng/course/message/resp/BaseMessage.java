@@ -8,7 +8,7 @@ package org.liufeng.course.message.resp;
  * time:2016-11-24 下午4:44:16
  * email:940728678@qq.com
  */
-public class BaseMessage {
+public class BaseMessage {   
 	// 接收方帐号（收到的OpenID）
 	private String ToUserName;
 	// 发送方微信号
