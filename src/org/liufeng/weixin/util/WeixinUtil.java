@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,6 +22,14 @@ import javax.net.ssl.TrustManager;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.liufeng.course.message.resp.Button;
 import org.liufeng.course.message.resp.ClickButton;
 import org.liufeng.course.message.resp.Menu;
@@ -52,6 +61,11 @@ public class WeixinUtil {
 	//调用创建接口创建菜单
 	public final static String CREATE_MENU = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 	
+	//调用查询接口菜单
+	public final static String QUERY_MENU = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+
+	//调用删除接口菜单
+	public final static String DELETE_MENU = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 	/** 
 	 * 获取access_token 
 	 *  
@@ -269,7 +283,12 @@ public class WeixinUtil {
 		return menu;
 	}
 	
-	
+	/**
+	 * 创建菜单
+	 * @param token
+	 * @param requestMenu
+	 * @return
+	 */
 	public static int createMenu(String token, String requestMenu){
 		int resultErrcode = 0;
 		String url = CREATE_MENU.replace("ACCESS_TOKEN", token);
@@ -278,5 +297,69 @@ public class WeixinUtil {
 			resultErrcode = resultjson.getInt("errcode");
 		}
 		return resultErrcode;
+	}
+	
+	/**
+	 * 查询菜单
+	 * @param token
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static JSONObject queryMenu(String token) throws ClientProtocolException, IOException{
+		String url =QUERY_MENU.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject = doGetRequest(url);
+		return jsonObject;
+	}
+	
+	/**
+	 * 删除菜单
+	 * @param token
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static int deleteMenu(String token) throws ClientProtocolException, IOException{
+		String url = DELETE_MENU.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject = doGetRequest(url);
+		int resultCode = 0;
+		if (jsonObject!=null) {
+			resultCode = jsonObject.getInt("errcode");
+		}
+		return resultCode;
+	}
+	
+	/**
+	 * 组装get请求
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static JSONObject doGetRequest(String url) throws ClientProtocolException, IOException{
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(url);
+		JSONObject jsonObject = null;
+		HttpResponse httpResponse = client.execute(httpGet);
+		HttpEntity entity = httpResponse.getEntity();
+		if (null != entity) {
+			String result = EntityUtils.toString(entity);
+			jsonObject = JSONObject.fromObject(result);
+		}
+		return jsonObject;
+	}
+	
+	/**
+	 * 组装POST请求
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static JSONObject doPostRequest(String url, String outStr) throws ClientProtocolException, IOException{
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		JSONObject jsonObject = null;
+		httpPost.setEntity(new StringEntity(outStr, "UTF-8"));
+		HttpResponse httpResponse = client.execute(httpPost);
+		String result = EntityUtils.toString(httpResponse.getEntity());
+		jsonObject = JSONObject.fromObject(result);
+		return jsonObject;
 	}
 }
